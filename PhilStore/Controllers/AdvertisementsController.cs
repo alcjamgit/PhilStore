@@ -8,27 +8,38 @@ using System.Web;
 using System.Web.Mvc;
 using PhilStore.DAL.Models;
 using Microsoft.AspNet.Identity;
+using PhilStore.DAL.Specifications;
 
 namespace PhilStore.Controllers
 {
     public class AdvertisementsController : Controller
     {
-        private ApplicationDbContext db = new ApplicationDbContext();
+
+        private ApplicationDbContext _db;
+        public AdvertisementsController( ApplicationDbContext db )
+        {
+            _db = db;
+        }
+        public AdvertisementsController() 
+        {
+            _db = new ApplicationDbContext();
+        }
                 
         // GET: Advertisements
         public ActionResult Index()
         {
-            return View(db.Advertisements.ToList());
+            return View(_db.Advertisements.ToList());
         }
 
         // GET: Advertisements/Details/5
         public ActionResult Details(int? id)
         {
+            
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+            Advertisement advertisement = _db.Advertisements.Find(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
@@ -39,6 +50,9 @@ namespace PhilStore.Controllers
         // GET: Advertisements/Create
         public ActionResult Create()
         {
+            string theUser = User.Identity.GetUserName();
+            HttpCookie lastSearch = new HttpCookie("search", "humans");
+            HttpContext.Response.SetCookie(lastSearch);
             return View();
         }
 
@@ -49,10 +63,11 @@ namespace PhilStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "Id,Title,CreateDate")] Advertisement advertisement)
         {
+            var existingSearch = HttpContext.Request.Cookies["search"];
             if (ModelState.IsValid)
             {
-                db.Advertisements.Add(advertisement);
-                db.SaveChanges();
+                _db.Advertisements.Add(advertisement);
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
 
@@ -66,7 +81,7 @@ namespace PhilStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+            Advertisement advertisement = _db.Advertisements.Find(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
@@ -83,8 +98,8 @@ namespace PhilStore.Controllers
         {
             if (ModelState.IsValid)
             {
-                db.Entry(advertisement).State = EntityState.Modified;
-                db.SaveChanges();
+                _db.Entry(advertisement).State = EntityState.Modified;
+                _db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(advertisement);
@@ -97,7 +112,7 @@ namespace PhilStore.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Advertisement advertisement = db.Advertisements.Find(id);
+            Advertisement advertisement = _db.Advertisements.Find(id);
             if (advertisement == null)
             {
                 return HttpNotFound();
@@ -110,9 +125,9 @@ namespace PhilStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Advertisement advertisement = db.Advertisements.Find(id);
-            db.Advertisements.Remove(advertisement);
-            db.SaveChanges();
+            Advertisement advertisement = _db.Advertisements.Find(id);
+            _db.Advertisements.Remove(advertisement);
+            _db.SaveChanges();
             return RedirectToAction("Index");
         }
 
@@ -120,7 +135,7 @@ namespace PhilStore.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                _db.Dispose();
             }
             base.Dispose(disposing);
         }

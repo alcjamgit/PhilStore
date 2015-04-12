@@ -3,6 +3,7 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using PhilStore.DAL.Specifications;
 
 
 namespace PhilStore.DAL.Models
@@ -15,10 +16,14 @@ namespace PhilStore.DAL.Models
         {
         }
 
+
         public static ApplicationDbContext Create()
         {
             return new ApplicationDbContext();
         }
-        public DbSet<Advertisement> Advertisements { get; set; }
+
+
+        public IDbSet<Advertisement> Advertisements { get; set; }
+
     }
 }

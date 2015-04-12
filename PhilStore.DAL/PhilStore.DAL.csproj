@@ -52,7 +52,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IDbContext.cs" />
     <Compile Include="Migrations\201504091202113_InitialCreate.cs" />
     <Compile Include="Migrations\201504091202113_InitialCreate.Designer.cs">
       <DependentUpon>201504091202113_InitialCreate.cs</DependentUpon>
@@ -62,6 +61,7 @@
     <Compile Include="Models\ApplicationDbContext.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Specifications\IAppDbContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201504091202113_InitialCreate.resx">

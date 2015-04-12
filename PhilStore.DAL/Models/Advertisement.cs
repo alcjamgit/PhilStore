@@ -10,6 +10,8 @@ namespace PhilStore.DAL.Models
     {
         public int Id { get; set; }
         public string Title { get; set; }
+        public string CreatedBy { get; set; }
         public DateTime CreateDate { get; set; }
+
     }
 }
