@@ -9,19 +9,31 @@ using PhilStore.DAL.Specifications;
 namespace PhilStore.DAL.Models
 {
 
-    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>
+    public class ApplicationDbContext : IdentityDbContext<ApplicationUser>, IAppDbContext
     {
         public ApplicationDbContext()
             : base("ApplicationDbContext", throwIfV1Schema: false)
         {
         }
+        public static ApplicationDbContext Create() {return new ApplicationDbContext();}
 
-
-        public static ApplicationDbContext Create()
+        #region IdentityDbContext<ApplicationUser> Methods
+        //Expose methods of IdentityDbContext<ApplicationUser> so the interface can make it required
+        public new void Dispose() 
         {
-            return new ApplicationDbContext();
+            base.Dispose();
+        }
+        public override int SaveChanges()
+        {
+            return base.SaveChanges();
         }
 
+        #endregion
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+        }
 
         public IDbSet<Advertisement> Advertisements { get; set; }
 

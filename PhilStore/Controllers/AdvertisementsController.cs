@@ -15,14 +15,10 @@ namespace PhilStore.Controllers
     public class AdvertisementsController : Controller
     {
 
-        private ApplicationDbContext _db;
-        public AdvertisementsController( ApplicationDbContext db )
+        private IAppDbContext _db;
+        public AdvertisementsController(IAppDbContext db)
         {
             _db = db;
-        }
-        public AdvertisementsController() 
-        {
-            _db = new ApplicationDbContext();
         }
                 
         // GET: Advertisements
@@ -61,14 +57,17 @@ namespace PhilStore.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Title,CreateDate")] Advertisement advertisement)
+        public ActionResult Create([Bind(Include = "Title")] Advertisement advertisement)
         {
-            var existingSearch = HttpContext.Request.Cookies["search"];
+            //var existingSearch = HttpContext.Request.Cookies["search"];
+            advertisement.CreateDate = DateTime.Now;
+            advertisement.CreatedBy = User.Identity.GetUserName();
+
             if (ModelState.IsValid)
             {
                 _db.Advertisements.Add(advertisement);
                 _db.SaveChanges();
-                return RedirectToAction("Index");
+                return RedirectToAction("");
             }
 
             return View(advertisement);

@@ -9,11 +9,15 @@ using PhilStore.DAL.Models;
 
 namespace PhilStore.DAL.Specifications
 {
-    public interface IAppDbContext
+    public interface IAppDbContext: IDisposable
     {
         IDbSet<Advertisement> Advertisements { get; set; }
+
+        #region DbContextMethods
         int SaveChanges();
-        void Dispose(bool disposing);
-        DbEntityEntry Entry(object entity); //used by Edit Actions
+        DbEntityEntry Entry(object entity);
+        
+        #endregion
+
     }
 }

@@ -56,6 +56,10 @@
     <Compile Include="Migrations\201504091202113_InitialCreate.Designer.cs">
       <DependentUpon>201504091202113_InitialCreate.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201504120824095_ApplicationDbContext.cs" />
+    <Compile Include="Migrations\201504120824095_ApplicationDbContext.Designer.cs">
+      <DependentUpon>201504120824095_ApplicationDbContext.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Advertisement.cs" />
     <Compile Include="Models\ApplicationDbContext.cs" />
@@ -66,6 +70,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201504091202113_InitialCreate.resx">
       <DependentUpon>201504091202113_InitialCreate.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201504120824095_ApplicationDbContext.resx">
+      <DependentUpon>201504120824095_ApplicationDbContext.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
